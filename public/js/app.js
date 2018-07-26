@@ -1,87 +1,87 @@
 
-function getFiles() {
-  return $.ajax('/api/file')
+function getLens() {
+  return $.ajax('/api/lens')
     .then(res => {
-      console.log("Results from getFiles()", res);
+      console.log("Results from getLens()", res);
       return res;
     })
     .fail(err => {
-      console.error("Error in getFiles()", err);
+      console.error("Error in getLens()", err);
       throw err;
     });
 }
 
-function refreshFileList() {
+function refreshLensList() {
   const template = $('#list-template').html();
   const compiledTemplate = Handlebars.compile(template);
 
-  getFiles()
-    .then(files => {
+  getLens()
+    .then(lens => {
 
-      window.fileList = files;
+      window.lensList = lens;
 
-      const data = {files: files};
+      const data = {lens: lens};
       const html = compiledTemplate(data);
       $('#list-container').html(html);
     })
 }
 
-function handleAddFileClick() {
+function handleAddLensClick() {
   setForm({});
-  toggleAddFileFormVisibility();
+  toggleAddLensFormVisibility();
 }
 
-function toggleAddFileFormVisibility() {
+function toggleAddLensFormVisibility() {
   $('#form-container').toggleClass('d-none');
   $('#lensDetails').modal('toggle')
 }
 
-function submitFileForm() {
+function submitLensForm() {
   console.log("You clicked 'submit'. Congratulations.");
 
-  const fileData = {
+  const lensData = {
     description: $('#file-description').val(),
     rating: $('#file-rating').val(),
     _id: $('#file-id').val(),
   };
 
   let method, url;
-  if (fileData._id) {
+  if (lensData._id) {
     method = 'PUT';
-    url = '/api/file/' + fileData._id;
+    url = '/api/lens/' + lensData._id;
   } else {
     method = 'POST';
-    url = '/api/file';
+    url = '/api/lens';
   }
 
   $.ajax({
     type: method,
     url: url,
-    data: JSON.stringify(fileData),
+    data: JSON.stringify(lensData),
     dataType: 'json',
     contentType : 'application/json',
   })
     .done(function(response) {
       console.log("We have posted the data");
-      refreshFileList();
-      toggleAddFileFormVisibility();
+      refreshLensList();
+      toggleAddLensFormVisibility();
     })
     .fail(function(error) {
       console.log("Failures at posting, we are", error);
     })
 
-  console.log("Your file data", fileData);
+  console.log("Your lens data", lensData);
 }
 
-function cancelFileForm() {
-  toggleAddFileFormVisibility();
+function cancelLensForm() {
+  toggleAddLensLensVisibility();
 }
 
-function handleEditFileClick(id) {
-  const file = window.fileList.find(file => file._id === id);
-  if (file) {
-    setForm(file);
-    toggleAddFileFormVisibility();
+function handleEditLensClick(id) {
+  const lens = window.lensList.find(lens => lens._id === id);
+  if (lens) {
+    setForm(lens);
+    toggleAddLensFormVisibility();
   }
 }
 
@@ -89,35 +89,35 @@ function handleEditFileClick(id) {
 function setForm(data) {
   data = data || {};
 
-  const file = {
+  const lens = {
     description: data.description || '',
     rating: data.rating || '',
     _id: data._id || '',
   };
 
-  $('#file-description').val(file.description);
-  $('#file-rating').val(file.rating);
-  $('#file-id').val(file._id);
+  $('#file-description').val(lens.description);
+  $('#file-rating').val(lens.rating);
+  $('#file-id').val(lens._id);
 
 }
 
 
-function handleDeleteFileClick(id) {
+function handleDeleteLensClick(id) {
   if (confirm("Are you sure?")) {
-    deleteFile(id);
+    deleteLens(id);
   }
 }
 
-function deleteFile(id) {
+function deleteLens(id) {
   $.ajax({
     type: 'DELETE',
-    url: '/api/file/' + id,
+    url: '/api/lens/' + id,
     dataType: 'json',
     contentType : 'application/json',
   })
     .done(function(response) {
-      console.log("File", id, "is DOOMED!!!!!!");
-      refreshFileList();
+      console.log("Lens", id, "is DOOMED!!!!!!");
+      refreshLensList();
     })
     .fail(function(error) {
       console.log("I'm not dead yet!", error);
@@ -125,4 +125,4 @@ function deleteFile(id) {
 }
 
 
-refreshFileList();
+refreshLensList();
