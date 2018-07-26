@@ -3,59 +3,59 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 
 /**
- * Get a list of all files in the DB
+ * Get a list of all lenses in the DB
  */
-router.get('/file', function(req, res, next) {
+router.get('/lens', function(req, res, next) {
   const lensModel = mongoose.model('Lens');
 
-  lensModel.find({deleted: {$ne: true}}, function(err, files) {
+  lensModel.find({deleted: {$ne: true}}, function(err, lens) {
     if (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   
-    res.json(files);
+    res.json(lens);
   });
 });
 
 /**
- * Get a single file by passing its id as a URL param
+ * Get a single lens by passing its id as a URL param
  */
-router.get('/file/:lensId', function(req, res, next) {
+router.get('/lens/:lensId', function(req, res, next) {
   const {lensId} = req.params;
 
-  const lens = FILES.find(entry => entry.id === lensId);
+  const lens = LENS.find(entry => entry.id === lensId);
   if (!lens) {
-    return res.status(404).end(`Could not find file '${lensId}'`);
+    return res.status(404).end(`Could not find lens '${lensId}'`);
   }
 
   res.json(lens);
 });
 
 /**
- * Create a new file
+ * Create a new lens
  */
-router.post('/file', function(req, res, next) {
+router.post('/lens', function(req, res, next) {
   const Lens = mongoose.model('Lens');
   const lensData = {
     description: req.body.description,
     rating: req.body.rating,
   };
 
-  Lens.create(lensData, function(err, newFile) {
+  Lens.create(lensData, function(err, newLens) {
     if (err) {
       console.log(err);
       return res.status(500).json(err);
     }
 
-    res.json(newFile);
+    res.json(newLens);
   });
 });
 
 /**
- * Update an existing file
+ * Update an existing lens
  */
-router.put('/file/:lensId', function(req, res, next) {
+router.put('/lens/:lensId', function(req, res, next) {
   const Lens = mongoose.model('Lens');
   const lensId = req.params.lensId;
 
@@ -71,12 +71,12 @@ router.put('/file/:lensId', function(req, res, next) {
     lens.description = req.body.description;
     lens.rating = req.body.rating;
 
-    lens.save(function(err, savedFile) {
+    lens.save(function(err, savedLens) {
       if (err) {
         console.error(err);
         return res.status(500).json(err);
       }
-      res.json(savedFile);
+      res.json(savedLens);
     })
 
   })
@@ -84,9 +84,9 @@ router.put('/file/:lensId', function(req, res, next) {
 });
 
 /**
- * Delete a file
+ * Delete a lens
  */
-router.delete('/file/:lensId', function(req, res, next) {
+router.delete('/lens/:lensId', function(req, res, next) {
   const Lens = mongoose.model('Lens');
   const lensId = req.params.lensId;
 
@@ -101,8 +101,8 @@ router.delete('/file/:lensId', function(req, res, next) {
 
     lens.deleted = true;
 
-    lens.save(function(err, doomedFile) {
-      res.json(doomedFile);
+    lens.save(function(err, doomedLens) {
+      res.json(doomedLens);
     })
 
   })
