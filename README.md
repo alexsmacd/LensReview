@@ -1,5 +1,4 @@
-# LensReview
-## Code Louisville Full Stack JavaScript Project
+# LensReview — Code Louisville Full Stack JavaScript Project
 
 My Code Louisville FSJS Project. A web app designed to let photographers add lenses to the site and review each one, as well as edit as needed.
 
