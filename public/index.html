@@ -29,7 +29,7 @@
         </table>
 </div><!-- /.row -->
 <!-- Button trigger modal -->
-<button type="button" id="add-file-button" class="btn btn-sm btn-secondary" onclick="handleAddFileClick()" data-toggle="modal" data-target="#lensDetails">Add Lens</button>
+<button type="button" id="add-file-button" class="btn btn-sm btn-secondary" onclick="handleAddLensClick()" data-toggle="modal" data-target="#lensDetails">Add Lens</button>
 
 <!-- Modal -->
 <div class="modal fade" id="lensDetails" tabindex="-1" role="dialog" aria-labelledby="lensDetailsTitle" aria-hidden="true">
@@ -54,8 +54,8 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="submitFileForm()" class="btn btn-sm btn-success">Submit</button>
-        <button type="button" onclick="cancelFileForm()" class="btn btn-sm btn-link">Cancel</button>
+        <button type="button" onclick="submitLensForm()" class="btn btn-sm btn-success">Submit</button>
+        <button type="button" onclick="cancelLensForm()" class="btn btn-sm btn-link">Cancel</button>
       </div>
 	  </form>
     </div>
@@ -64,13 +64,13 @@
 </div> <!-- /.container -->
 
     <script id="list-template" type="text/x-handlebars-template">
-        {{#each files}}
+        {{#each lens}}
         <tr>
           <th scope="row">{{description}}</th>
           <td>{{rating}}</td>
           <td>
-              <button type="button" class="btn btn-sm btn-success" onclick="handleEditFileClick('{{_id}}')">Edit</button>
-              <button type="button" class="btn btn-sm btn-danger" onclick="handleDeleteFileClick('{{_id}}')">Delete</button>
+              <button type="button" class="btn btn-sm btn-success" onclick="handleEditLensClick('{{_id}}')">Edit</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="handleDeleteLensClick('{{_id}}')">Delete</button>
           </td>
         </tr>
         {{/each}}
@@ -85,7 +85,7 @@
     <script src="/js/app.js"></script>
     <script>
       $(document).ready(function () {
-        refreshFileList();
+        refreshLensList();
         setForm();
       });
     </script>
